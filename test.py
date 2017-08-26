@@ -94,11 +94,16 @@ for i in range(num_of_pts):
     mm_S_imag = s2mixedS(data_l[i].get("imag"))
     mm_S_mag.append(mag_matrix(mm_S_real,mm_S_imag))
 
-
-print("SDD21: ", 20*math.log10(mm_S_mag[0][1,0]))
-
+#       [0 0] [0 1] [0 2] [0 3]
+# [0 0] SDD11 SDD12 SDC11 SDC12
+# [1 0] SDD21 SDD22 SDC21 SDC22
+# [2 0] SCD11 SCD12 SCC11 SCC12
+# [3 0] SCD21 SCD22 SCC21 SCC22
 
 with open('test_output.txt','w') as f:
-    f.write("Freq\tSDD21\n")
+    f.write("Freq\tSDD11\tSDD21\tSCD21\n")
     for i in range(num_of_pts):
-        f.write(str(i)+"\t"+str(20*math.log10(mm_S_mag[i][1,0]))+"\n")
+        f.write(str(10*(i+1))+"\t"
+                + str(num2dB(mm_S_mag[i][0,0]))+"\t"
+                + str(num2dB(mm_S_mag[i][1,0]))+"\t"
+                + str(num2dB(mm_S_mag[i][3,0]))+"\n")
